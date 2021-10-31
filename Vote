@@ -1,0 +1,31 @@
+pragma solidity ^0.6.6;
+
+contract Elecciones{
+    
+    struct Candidato{
+        uint id;
+        string nombre;
+        uint voteCount;
+    }
+    
+    mapping (uint => Candidato) public candidatos;
+    uint public candidatocount;
+    mapping (address => bool) public ciudadanos;
+    
+    constructor() public{
+        addCandidato("Johan Castillo");
+        addCandidato("Pablo Fajardo");
+    }
+    
+    function addCandidato(string memory _nombre) private{
+        candidatocount++;
+        candidatos[candidatocount] = Candidato(candidatocount, _nombre, 0);
+    }
+    
+    function vote(uint _candidatoid) public{
+        require(!ciudadanos[msg.sender]);
+        
+        ciudadanos[msg.sender] = true;
+        candidatos[_candidatoid].voteCount ++;
+    }
+}
